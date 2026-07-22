@@ -133,3 +133,45 @@ html, body {
   border-radius: 50%;
   flex-shrink: 0;
 }
+
+/* Íconos de persona (inicio) y casa (visita) sobre el mapa */
+.leaflet-div-icon.marcador-icono {
+  background: transparent;
+  border: none;
+}
+
+.marcador-punto {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.45);
+}
+
+/* Popup de detalle de visita */
+.popup-visita h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.9rem;
+  color: #1f2937;
+}
+
+.popup-visita dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.2rem 0.6rem;
+  font-size: 0.82rem;
+}
+
+.popup-visita dt {
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.popup-visita dd {
+  margin: 0;
+  color: #1f2937;
+}

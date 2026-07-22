@@ -134,12 +134,23 @@ function dibujarRuta(geoJson) {
     }),
     pointToLayer: (feature, latlng) => {
       const color = colorDeFeature(feature) || COLOR_POR_DEFECTO;
-      return L.circleMarker(latlng, {
-        radius: 6,
-        color,
-        fillColor: color,
-        fillOpacity: 1,
-      });
+      const info = descripcionAObjeto(feature.properties && feature.properties.description);
+      const tipo = tipoDePunto(info);
+
+      if (!tipo) {
+        return L.circleMarker(latlng, {
+          radius: 6,
+          color,
+          fillColor: color,
+          fillOpacity: 1,
+        });
+      }
+
+      const marcador = L.marker(latlng, { icon: crearIconoPunto(tipo, color) });
+      marcador.bindPopup(
+        tipo === "visita" ? crearPopupVisita(feature, info) : crearPopupInicio(feature)
+      );
+      return marcador;
     },
   }).addTo(mapa);
 
@@ -189,6 +200,133 @@ function invertirRojoAzul(hex) {
   const g = hex.slice(2, 4);
   const b = hex.slice(4, 6);
   return `${b}${g}${r}`;
+}
+
+/**
+ * Convierte el campo "description" (HTML con CDATA que exporta
+ * Google My Maps, ej. "<![CDATA[<br>NID: 25<br>Hora: 08:30am...")
+ * en un objeto { NID: "25", Hora: "08:30am", ... }.
+ *
+ * @param {string|undefined} description
+ * @returns {Object|null}
+ */
+function descripcionAObjeto(description) {
+  if (!description) return null;
+
+  const limpio = description.replace(/^<!\[CDATA\[/, "").replace(/\]\]>$/, "");
+  const campos = limpio
+    .split(/<br\s*\/?>/i)
+    .map((campo) => campo.trim())
+    .filter(Boolean);
+
+  const info = {};
+  for (const campo of campos) {
+    const separador = campo.indexOf(":");
+    if (separador === -1) continue;
+    const clave = campo.slice(0, separador).trim();
+    const valor = campo.slice(separador + 1).trim();
+    if (clave && valor) info[clave] = valor;
+  }
+
+  return Object.keys(info).length > 0 ? info : null;
+}
+
+/**
+ * Clasifica un punto según los campos que trae su descripción:
+ * los puntos de inicio de cada visitador traen "Prioridad", y
+ * las visitas traen "NID"/"Agente" (ver descripcionAObjeto).
+ *
+ * @param {Object|null} info
+ * @returns {"inicio"|"visita"|null}
+ */
+function tipoDePunto(info) {
+  if (!info) return null;
+  if ("Prioridad" in info) return "inicio";
+  if ("NID" in info || "Agente" in info) return "visita";
+  return null;
+}
+
+const ICONO_SVG_PERSONA =
+  "M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.67-5.33-4-8-4z";
+const ICONO_SVG_CASA = "M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z";
+
+/**
+ * Crea un ícono circular de color sólido (el color del visitador)
+ * con un glifo de persona (punto de inicio) o casa (visita) adentro,
+ * imitando los íconos de Google My Maps.
+ *
+ * @param {"inicio"|"visita"} tipo
+ * @param {string} color
+ * @returns {L.DivIcon}
+ */
+function crearIconoPunto(tipo, color) {
+  const path = tipo === "inicio" ? ICONO_SVG_PERSONA : ICONO_SVG_CASA;
+  return L.divIcon({
+    className: "marcador-icono",
+    html: `<span class="marcador-punto" style="background:${color}">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="#fff"><path d="${path}"/></svg>
+    </span>`,
+    iconSize: [26, 26],
+    iconAnchor: [13, 13],
+    popupAnchor: [0, -15],
+  });
+}
+
+/**
+ * Arma el contenido del popup de una visita: dirección, NID,
+ * agente, hora y duración, igual a la ficha que muestra Google
+ * My Maps al hacer clic en una casa.
+ *
+ * @param {Object} feature
+ * @param {Object} info
+ * @returns {HTMLElement}
+ */
+function crearPopupVisita(feature, info) {
+  const contenedor = document.createElement("div");
+  contenedor.className = "popup-visita";
+
+  const titulo = document.createElement("h3");
+  titulo.textContent = (feature.properties && feature.properties.name) || "Visita";
+  contenedor.appendChild(titulo);
+
+  const etiquetas = {
+    Agente: "Agente",
+    NID: "NID",
+    Tipo: "Tipo",
+    Direccion: "Dirección",
+    Hora: "Hora",
+    Duracion: "Duración",
+  };
+
+  const lista = document.createElement("dl");
+  for (const [clave, etiqueta] of Object.entries(etiquetas)) {
+    if (!info[clave]) continue;
+    const dt = document.createElement("dt");
+    dt.textContent = etiqueta;
+    const dd = document.createElement("dd");
+    dd.textContent = info[clave];
+    lista.append(dt, dd);
+  }
+  contenedor.appendChild(lista);
+
+  return contenedor;
+}
+
+/**
+ * Popup simple para el punto de inicio de un visitador (ícono de persona).
+ *
+ * @param {Object} feature
+ * @returns {HTMLElement}
+ */
+function crearPopupInicio(feature) {
+  const contenedor = document.createElement("div");
+  contenedor.className = "popup-visita";
+
+  const titulo = document.createElement("h3");
+  titulo.textContent = (feature.properties && feature.properties.name) || "Inicio de ruta";
+  contenedor.appendChild(titulo);
+
+  return contenedor;
 }
 
 /**
