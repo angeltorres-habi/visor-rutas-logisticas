@@ -1,0 +1,36 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": { "nombre": "Trazado de entrega" },
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [-74.1469, 4.7110],
+          [-74.1234, 4.6980],
+          [-74.0938, 4.6746],
+          [-74.0721, 4.6533],
+          [-74.0703, 4.6280],
+          [-74.0817, 4.6097]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "nombre": "Bodega origen", "tipo": "origen" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-74.1469, 4.7110]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": { "nombre": "Cliente destino", "tipo": "destino" },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-74.0817, 4.6097]
+      }
+    }
+  ]
+}
