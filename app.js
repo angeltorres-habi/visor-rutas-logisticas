@@ -115,26 +115,32 @@ function procesarYExtraerGeoJson(jsonComplejo) {
   return geoJson;
 }
 
+const COLOR_POR_DEFECTO = "#2563eb";
+
 /**
- * Dibuja el GeoJSON de la ruta en el mapa y ajusta el zoom
- * para que encuadre toda la geometría (fitBounds).
+ * Dibuja el GeoJSON de la ruta en el mapa, coloreando cada
+ * visitador con su propio color (si el GeoJSON lo trae, como
+ * en los exports de Google My Maps), y ajusta el zoom para
+ * encuadrar toda la geometría (fitBounds).
  *
  * @param {Object} geoJson
  */
 function dibujarRuta(geoJson) {
   const capaRuta = L.geoJSON(geoJson, {
-    style: {
-      color: "#2563eb",
+    style: (feature) => ({
+      color: colorDeFeature(feature) || COLOR_POR_DEFECTO,
       weight: 4,
       opacity: 0.9,
-    },
-    pointToLayer: (feature, latlng) =>
-      L.circleMarker(latlng, {
+    }),
+    pointToLayer: (feature, latlng) => {
+      const color = colorDeFeature(feature) || COLOR_POR_DEFECTO;
+      return L.circleMarker(latlng, {
         radius: 6,
-        color: "#2563eb",
-        fillColor: "#60a5fa",
+        color,
+        fillColor: color,
         fillOpacity: 1,
-      }),
+      });
+    },
   }).addTo(mapa);
 
   const bounds = capaRuta.getBounds();
@@ -143,6 +149,97 @@ function dibujarRuta(geoJson) {
   } else {
     throw new Error("El GeoJSON de la ruta no tiene coordenadas válidas para encuadrar.");
   }
+
+  mostrarLeyenda(geoJson);
+}
+
+/**
+ * Determina el color de un feature a partir de las propiedades
+ * que exporta Google My Maps (stroke / styleUrl).
+ *
+ * Los exports de My Maps codifican el color del ícono correctamente,
+ * pero el color de línea (stroke y styleUrl de las líneas) viene con
+ * los canales rojo y azul invertidos — un bug conocido de la
+ * conversión KML -> GeoJSON. Por eso las líneas se corrigen aquí
+ * para que coincidan visualmente con el color real del visitador.
+ *
+ * @param {Object} feature
+ * @returns {string|null} color en formato "#rrggbb", o null si no hay info de color
+ */
+function colorDeFeature(feature) {
+  const props = feature.properties || {};
+  const esLinea =
+    feature.geometry &&
+    (feature.geometry.type === "LineString" || feature.geometry.type === "MultiLineString");
+
+  const hexCrudo = props.stroke || extraerHexDeStyleUrl(props.styleUrl);
+  if (!hexCrudo) return null;
+
+  const hex = esLinea ? invertirRojoAzul(hexCrudo) : hexCrudo;
+  return `#${hex}`;
+}
+
+function extraerHexDeStyleUrl(styleUrl) {
+  const match = /-([0-9a-f]{6})-/i.exec(styleUrl || "");
+  return match ? match[1].toLowerCase() : null;
+}
+
+function invertirRojoAzul(hex) {
+  const r = hex.slice(0, 2);
+  const g = hex.slice(2, 4);
+  const b = hex.slice(4, 6);
+  return `${b}${g}${r}`;
+}
+
+/**
+ * Muestra una leyenda con el nombre y color de cada visitador,
+ * detectados a partir de los puntos con nombre "COD - NOMBRE"
+ * (el formato que usa Google My Maps para el punto de partida
+ * de cada visitador). Si no hay visitadores identificables,
+ * la leyenda permanece oculta.
+ *
+ * @param {Object} geoJson
+ */
+function mostrarLeyenda(geoJson) {
+  const features = geoJson.type === "FeatureCollection" ? geoJson.features : [geoJson];
+  const coloresVistos = new Set();
+  const visitadores = [];
+
+  for (const feature of features) {
+    const nombre = feature.properties && feature.properties.name;
+    if (!nombre || !/ - /.test(nombre)) continue;
+
+    const color = colorDeFeature(feature);
+    if (!color || coloresVistos.has(color)) continue;
+
+    coloresVistos.add(color);
+    visitadores.push({ nombre: nombre.split(" - ").slice(1).join(" - ").trim(), color });
+  }
+
+  const contenedor = document.getElementById("leyenda");
+
+  if (visitadores.length === 0) {
+    contenedor.hidden = true;
+    return;
+  }
+
+  contenedor.replaceChildren(
+    ...visitadores.map(({ nombre, color }) => {
+      const item = document.createElement("div");
+      item.className = "leyenda-item";
+
+      const swatch = document.createElement("span");
+      swatch.className = "leyenda-color";
+      swatch.style.background = color;
+
+      const texto = document.createElement("span");
+      texto.textContent = nombre;
+
+      item.append(swatch, texto);
+      return item;
+    })
+  );
+  contenedor.hidden = false;
 }
 
 // -------------------------------------------------------------
