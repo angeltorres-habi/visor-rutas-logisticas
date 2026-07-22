@@ -1,2 +1,10 @@
 .DS_Store
 .vercel
+
+# Fixtures locales con datos reales de Habi (nombres, direcciones,
+# correos) usadas para probar el formato de la API — no deben
+# llegar al repo público. Usa data/Ruta01.geojson (sintético) como
+# ejemplo público.
+data/2026-05-12.geojson
+data/2026-07-22-bogota.geojson
+data/respuesta_api_completa_ejemplo.json

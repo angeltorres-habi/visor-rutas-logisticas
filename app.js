@@ -1,41 +1,80 @@
 /**
  * Visor de Rutas Logísticas
  * ---------------------------------------------------------
- * Lee ?id_ruta=... de la URL, pide el ruteo a la API,
- * extrae el GeoJSON embebido en la respuesta y lo dibuja
- * en un mapa Leaflet, ajustando el zoom a la ruta completa.
+ * Dos modos, según el parámetro que traiga la URL:
+ *
+ *  - ?ciudad=bogota   -> modo API real: llama al backend de
+ *    ruteo y renderiza su map_geojson. Al terminar, agrega
+ *    "&fecha=YYYY-MM-DD" (hoy) a la URL del navegador.
+ *  - ?id_ruta=Ruta01  -> modo archivo local: carga
+ *    data/<id_ruta>.geojson (para pruebas sin backend).
  */
 
-// URL base de la API real. Cámbiala por tu endpoint cuando lo tengas.
-const API_BASE_URL = "https://api.empresa.com/rutas";
+// Backend intermedio que arma el payload completo (visitas + visitadores)
+// y llama a /get_visit_routes, devolviendo el resultado ya resuelto para
+// una ciudad. TODO: reemplazar por la URL real cuando ese backend exista.
+const API_ROUTING_URL = "https://TU-BACKEND-INTERMEDIO.example.com/ruta";
 
 // Referencia global al mapa (se crea una sola vez).
 let mapa = null;
 
 /**
- * Punto de entrada. Orquesta el flujo completo:
- * leer parámetro -> fetch -> extraer geojson -> dibujar.
+ * Punto de entrada. Decide el modo según los parámetros de la URL
+ * y ejecuta el flujo completo: fetch -> extraer geojson -> dibujar.
  */
 async function main() {
-  const idRuta = obtenerIdRutaDesdeUrl();
+  const params = new URLSearchParams(window.location.search);
+  const ciudad = (params.get("ciudad") || "").trim();
+  const idRuta = (params.get("id_ruta") || "").trim();
 
-  if (!idRuta) {
-    mostrarError(
-      "Falta el parámetro 'id_ruta' en la URL. " +
-        "Agrega algo como ?id_ruta=Ruta01 al final del enlace."
-    );
+  if (ciudad) {
+    await ejecutarFlujo({
+      titulo: `Ciudad: ${ciudad}`,
+      mensajeCargando: `Consultando rutas de "${ciudad}"...`,
+      obtenerJson: () => obtenerDatosRutaApi(ciudad),
+      alTerminar: agregarFechaDeHoyALaUrl,
+    });
     return;
   }
 
-  document.getElementById("ruta-titulo").textContent = `Ruta: ${idRuta}`;
+  if (idRuta) {
+    await ejecutarFlujo({
+      titulo: `Ruta: ${idRuta}`,
+      mensajeCargando: `Cargando datos de la ruta "${idRuta}"...`,
+      obtenerJson: () => obtenerDatosRutaSimulada(idRuta),
+    });
+    return;
+  }
+
+  mostrarError(
+    "Falta el parámetro 'ciudad' en la URL. " +
+      "Agrega algo como ?ciudad=bogota al final del enlace " +
+      "(o ?id_ruta=Ruta01 para pruebas con archivos locales)."
+  );
+}
+
+/**
+ * Orquesta un flujo de carga: muestra el título y el estado de
+ * carga, pide el JSON, extrae el GeoJSON y lo dibuja. Cualquier
+ * error a lo largo del camino se muestra en pantalla.
+ *
+ * @param {Object} opciones
+ * @param {string} opciones.titulo - Texto a mostrar junto al encabezado.
+ * @param {string} opciones.mensajeCargando - Mensaje del overlay de carga.
+ * @param {() => Promise<Object>} opciones.obtenerJson - Obtiene el JSON crudo de la API.
+ * @param {() => void} [opciones.alTerminar] - Se ejecuta tras dibujar la ruta con éxito.
+ */
+async function ejecutarFlujo({ titulo, mensajeCargando, obtenerJson, alTerminar }) {
+  document.getElementById("ruta-titulo").textContent = titulo;
   mapa = inicializarMapa();
-  mostrarCargando(`Cargando datos de la ruta "${idRuta}"...`);
+  mostrarCargando(mensajeCargando);
 
   try {
-    const jsonComplejo = await obtenerDatosRuta(idRuta);
+    const jsonComplejo = await obtenerJson();
     const geoJson = procesarYExtraerGeoJson(jsonComplejo);
     dibujarRuta(geoJson);
     ocultarStatus();
+    if (alTerminar) alTerminar();
   } catch (error) {
     console.error("Error al cargar la ruta:", error);
     mostrarError(error.message || "Ocurrió un error inesperado al cargar la ruta.");
@@ -43,13 +82,21 @@ async function main() {
 }
 
 /**
- * Lee el parámetro 'id_ruta' de la query string actual.
- * @returns {string|null}
+ * Agrega "fecha=YYYY-MM-DD" (hoy, hora local) a la URL del navegador
+ * sin recargar la página, para que el link refleje el día en que se
+ * consultó la ruta. No pisa una fecha que ya venga en la URL.
  */
-function obtenerIdRutaDesdeUrl() {
-  const params = new URLSearchParams(window.location.search);
-  const idRuta = params.get("id_ruta");
-  return idRuta && idRuta.trim() !== "" ? idRuta.trim() : null;
+function agregarFechaDeHoyALaUrl() {
+  const url = new URL(window.location.href);
+  if (url.searchParams.get("fecha")) return;
+
+  const hoy = new Date();
+  const año = hoy.getFullYear();
+  const mes = String(hoy.getMonth() + 1).padStart(2, "0");
+  const dia = String(hoy.getDate()).padStart(2, "0");
+
+  url.searchParams.set("fecha", `${año}-${mes}-${dia}`);
+  window.history.replaceState({}, "", url);
 }
 
 /**
@@ -71,45 +118,51 @@ function inicializarMapa() {
 }
 
 /**
- * Obtiene los datos de ruteo desde la API para un id_ruta dado.
+ * Llama al backend de ruteo real para una ciudad dada.
  *
- * NOTA: Aquí se simula la respuesta de la API para poder probar
- * el visor sin backend real. Para conectar tu API real, reemplaza
- * el cuerpo de esta función por el fetch comentado más abajo.
+ * NOTA: este backend intermedio arma el payload completo que espera
+ * /get_visit_routes (visitas + visitadores del día) y expone algo
+ * simple para el visor. Mientras no exista, esta función fallará con
+ * un error de red claro — reemplaza API_ROUTING_URL cuando esté listo.
  *
- * @param {string} idRuta
- * @returns {Promise<Object>} JSON complejo devuelto por la API
+ * Cualquier token/API key que ese backend necesite para llamar a
+ * /get_visit_routes debe vivir en el backend, nunca aquí: este es
+ * código estático que cualquiera puede leer en el navegador.
+ *
+ * @param {string} ciudad
+ * @returns {Promise<Object>} JSON crudo devuelto por la API
  */
-async function obtenerDatosRuta(idRuta) {
-  const url = `${API_BASE_URL}/${idRuta}`;
-
-  // --- Implementación real (descomentar al conectar tu API) ---
-  // const respuesta = await fetch(url);
-  // if (!respuesta.ok) {
-  //   throw new Error(`La API respondió con estado ${respuesta.status} para "${idRuta}".`);
-  // }
-  // return await respuesta.json();
-
-  // --- Simulación (para desarrollo/demo sin backend) ---
-  return simularFetchApi(idRuta, url);
+async function obtenerDatosRutaApi(ciudad) {
+  const url = `${API_ROUTING_URL}?ciudad=${encodeURIComponent(ciudad)}`;
+  const respuesta = await fetch(url);
+  if (!respuesta.ok) {
+    throw new Error(`La API de ruteo respondió con estado ${respuesta.status} para "${ciudad}".`);
+  }
+  return await respuesta.json();
 }
 
 /**
- * Recibe el JSON completo de la API y extrae únicamente
- * el objeto GeoJSON anidado en resultado_ruteo.mapa_geojson.
+ * Extrae el GeoJSON del ruteo desde la respuesta cruda de la API,
+ * probando las formas conocidas: la de /get_visit_routes
+ * (data.map_geojson) y la de la simulación local
+ * (resultado_ruteo.mapa_geojson).
  *
  * @param {Object} jsonComplejo
  * @returns {Object} GeoJSON válido
  */
 function procesarYExtraerGeoJson(jsonComplejo) {
-  if (!jsonComplejo || jsonComplejo.status !== "success") {
-    throw new Error("La API no devolvió un resultado exitoso ('status' distinto de 'success').");
-  }
+  const candidatos = [
+    jsonComplejo?.data?.map_geojson,
+    jsonComplejo?.resultado_ruteo?.mapa_geojson,
+    jsonComplejo?.map_geojson,
+  ];
+  const geoJson = candidatos.find((candidato) => candidato && typeof candidato === "object");
 
-  const geoJson = jsonComplejo?.resultado_ruteo?.mapa_geojson;
-
-  if (!geoJson || typeof geoJson !== "object") {
-    throw new Error("La respuesta de la API no contiene un GeoJSON válido en 'resultado_ruteo.mapa_geojson'.");
+  if (!geoJson) {
+    throw new Error(
+      "La respuesta de la API no contiene un GeoJSON reconocible " +
+        "(se buscó en data.map_geojson y resultado_ruteo.mapa_geojson)."
+    );
   }
 
   return geoJson;
@@ -117,11 +170,18 @@ function procesarYExtraerGeoJson(jsonComplejo) {
 
 const COLOR_POR_DEFECTO = "#2563eb";
 
+// Bounding box amplio de Colombia. Se usa solo para decidir qué
+// coordenadas entran en el fitBounds: algunas visitas o trayectos
+// llegan con coordenadas de geocodificación fallida (ver
+// "geolocalizacion_exito" en la respuesta de la API) muy lejos de
+// la ciudad real, y sin este filtro el mapa termina encuadrando
+// medio continente en vez de la ruta.
+const COLOMBIA_BBOX = { latMin: -4.5, latMax: 13.5, lngMin: -79.5, lngMax: -66.5 };
+
 /**
  * Dibuja el GeoJSON de la ruta en el mapa, coloreando cada
- * visitador con su propio color (si el GeoJSON lo trae, como
- * en los exports de Google My Maps), y ajusta el zoom para
- * encuadrar toda la geometría (fitBounds).
+ * visitador con su propio color, y ajusta el zoom para encuadrar
+ * la geometría (fitBounds), ignorando coordenadas fuera de Colombia.
  *
  * @param {Object} geoJson
  */
@@ -134,8 +194,8 @@ function dibujarRuta(geoJson) {
     }),
     pointToLayer: (feature, latlng) => {
       const color = colorDeFeature(feature) || COLOR_POR_DEFECTO;
-      const info = descripcionAObjeto(feature.properties && feature.properties.description);
-      const tipo = tipoDePunto(info);
+      const info = infoDeVisita(feature);
+      const tipo = tipoDePunto(feature, info);
 
       if (!tipo) {
         return L.circleMarker(latlng, {
@@ -154,7 +214,7 @@ function dibujarRuta(geoJson) {
     },
   }).addTo(mapa);
 
-  const bounds = capaRuta.getBounds();
+  const bounds = calcularBoundsValidos(geoJson);
   if (bounds.isValid()) {
     mapa.fitBounds(bounds, { padding: [50, 50] });
   } else {
@@ -165,20 +225,62 @@ function dibujarRuta(geoJson) {
 }
 
 /**
- * Determina el color de un feature a partir de las propiedades
- * que exporta Google My Maps (stroke / styleUrl).
+ * Calcula los límites geográficos a partir de las coordenadas del
+ * GeoJSON que caen dentro de Colombia, descartando outliers de
+ * geocodificación fallida (ver COLOMBIA_BBOX). Los features siguen
+ * dibujándose todos; esto solo afecta el encuadre del mapa.
  *
- * Los exports de My Maps codifican el color del ícono correctamente,
- * pero el color de línea (stroke y styleUrl de las líneas) viene con
- * los canales rojo y azul invertidos — un bug conocido de la
- * conversión KML -> GeoJSON. Por eso las líneas se corrigen aquí
- * para que coincidan visualmente con el color real del visitador.
+ * @param {Object} geoJson
+ * @returns {L.LatLngBounds}
+ */
+function calcularBoundsValidos(geoJson) {
+  const features = geoJson.type === "FeatureCollection" ? geoJson.features : [geoJson];
+  const bounds = L.latLngBounds([]);
+
+  for (const feature of features) {
+    recorrerCoordenadas(feature.geometry, ([lng, lat]) => {
+      const dentroDeColombia =
+        lat >= COLOMBIA_BBOX.latMin &&
+        lat <= COLOMBIA_BBOX.latMax &&
+        lng >= COLOMBIA_BBOX.lngMin &&
+        lng <= COLOMBIA_BBOX.lngMax;
+
+      if (dentroDeColombia) bounds.extend([lat, lng]);
+    });
+  }
+
+  return bounds;
+}
+
+function recorrerCoordenadas(geometry, callback) {
+  if (!geometry) return;
+  const { type, coordinates } = geometry;
+
+  if (type === "Point") return callback(coordinates);
+  if (type === "LineString" || type === "MultiPoint") return coordinates.forEach(callback);
+  if (type === "Polygon" || type === "MultiLineString") {
+    return coordinates.forEach((linea) => linea.forEach(callback));
+  }
+  if (type === "MultiPolygon") {
+    return coordinates.forEach((poligono) => poligono.forEach((linea) => linea.forEach(callback)));
+  }
+}
+
+/**
+ * Determina el color de un feature. El backend real (kind-based,
+ * ver infoDeVisita) ya manda un "color" correcto en las propiedades.
+ * Los exports de Google My Maps no traen ese campo: ahí se infiere
+ * desde stroke/styleUrl, corrigiendo un bug conocido de la conversión
+ * KML -> GeoJSON que invierte los canales rojo y azul de las líneas.
  *
  * @param {Object} feature
  * @returns {string|null} color en formato "#rrggbb", o null si no hay info de color
  */
 function colorDeFeature(feature) {
   const props = feature.properties || {};
+
+  if (props.color) return props.color;
+
   const esLinea =
     feature.geometry &&
     (feature.geometry.type === "LineString" || feature.geometry.type === "MultiLineString");
@@ -200,6 +302,32 @@ function invertirRojoAzul(hex) {
   const g = hex.slice(2, 4);
   const b = hex.slice(4, 6);
   return `${b}${g}${r}`;
+}
+
+/**
+ * Normaliza los datos de una visita a { Agente, NID, Tipo, Direccion,
+ * Hora, Duracion }, sin importar si vienen como propiedades directas
+ * (API real: kind === "visita") o como HTML/CDATA en "description"
+ * (exports de Google My Maps).
+ *
+ * @param {Object} feature
+ * @returns {Object|null}
+ */
+function infoDeVisita(feature) {
+  const props = feature.properties || {};
+
+  if (props.kind === "visita") {
+    return {
+      Agente: props.agente_nombre,
+      NID: props.nid,
+      Tipo: props.tipo,
+      Direccion: props.direccion,
+      Hora: props.hora,
+      Duracion: props.duracion,
+    };
+  }
+
+  return descripcionAObjeto(props.description);
 }
 
 /**
@@ -232,14 +360,20 @@ function descripcionAObjeto(description) {
 }
 
 /**
- * Clasifica un punto según los campos que trae su descripción:
- * los puntos de inicio de cada visitador traen "Prioridad", y
- * las visitas traen "NID"/"Agente" (ver descripcionAObjeto).
+ * Clasifica un punto en "inicio" (persona) o "visita" (casa).
+ * La API real ya lo dice en properties.kind ("agente"/"visita");
+ * los exports de My Maps se infieren desde los campos de "description"
+ * (ver infoDeVisita/descripcionAObjeto).
  *
+ * @param {Object} feature
  * @param {Object|null} info
  * @returns {"inicio"|"visita"|null}
  */
-function tipoDePunto(info) {
+function tipoDePunto(feature, info) {
+  const kind = feature.properties && feature.properties.kind;
+  if (kind === "agente") return "inicio";
+  if (kind === "visita") return "visita";
+
   if (!info) return null;
   if ("Prioridad" in info) return "inicio";
   if ("NID" in info || "Agente" in info) return "visita";
@@ -282,11 +416,12 @@ function crearIconoPunto(tipo, color) {
  * @returns {HTMLElement}
  */
 function crearPopupVisita(feature, info) {
+  const props = feature.properties || {};
   const contenedor = document.createElement("div");
   contenedor.className = "popup-visita";
 
   const titulo = document.createElement("h3");
-  titulo.textContent = (feature.properties && feature.properties.name) || "Visita";
+  titulo.textContent = props.direccion || props.name || props.id || "Visita";
   contenedor.appendChild(titulo);
 
   const etiquetas = {
@@ -300,11 +435,12 @@ function crearPopupVisita(feature, info) {
 
   const lista = document.createElement("dl");
   for (const [clave, etiqueta] of Object.entries(etiquetas)) {
-    if (!info[clave]) continue;
+    const valor = info && info[clave];
+    if (valor === undefined || valor === null || valor === "") continue;
     const dt = document.createElement("dt");
     dt.textContent = etiqueta;
     const dd = document.createElement("dd");
-    dd.textContent = info[clave];
+    dd.textContent = valor;
     lista.append(dt, dd);
   }
   contenedor.appendChild(lista);
@@ -319,22 +455,23 @@ function crearPopupVisita(feature, info) {
  * @returns {HTMLElement}
  */
 function crearPopupInicio(feature) {
+  const props = feature.properties || {};
   const contenedor = document.createElement("div");
   contenedor.className = "popup-visita";
 
   const titulo = document.createElement("h3");
-  titulo.textContent = (feature.properties && feature.properties.name) || "Inicio de ruta";
+  titulo.textContent = props.nombre || props.name || "Inicio de ruta";
   contenedor.appendChild(titulo);
 
   return contenedor;
 }
 
 /**
- * Muestra una leyenda con el nombre y color de cada visitador,
- * detectados a partir de los puntos con nombre "COD - NOMBRE"
- * (el formato que usa Google My Maps para el punto de partida
- * de cada visitador). Si no hay visitadores identificables,
- * la leyenda permanece oculta.
+ * Muestra una leyenda con el nombre y color de cada visitador.
+ * La API real lo marca con kind === "agente" (nombre + color
+ * directos); los exports de My Maps se detectan por el nombre
+ * "COD - NOMBRE" del punto de partida. Si no hay visitadores
+ * identificables, la leyenda permanece oculta.
  *
  * @param {Object} geoJson
  */
@@ -344,14 +481,11 @@ function mostrarLeyenda(geoJson) {
   const visitadores = [];
 
   for (const feature of features) {
-    const nombre = feature.properties && feature.properties.name;
-    if (!nombre || !/ - /.test(nombre)) continue;
+    const visitador = nombreYColorDeVisitador(feature);
+    if (!visitador || coloresVistos.has(visitador.color)) continue;
 
-    const color = colorDeFeature(feature);
-    if (!color || coloresVistos.has(color)) continue;
-
-    coloresVistos.add(color);
-    visitadores.push({ nombre: nombre.split(" - ").slice(1).join(" - ").trim(), color });
+    coloresVistos.add(visitador.color);
+    visitadores.push(visitador);
   }
 
   const contenedor = document.getElementById("leyenda");
@@ -378,6 +512,22 @@ function mostrarLeyenda(geoJson) {
     })
   );
   contenedor.hidden = false;
+}
+
+function nombreYColorDeVisitador(feature) {
+  const props = feature.properties || {};
+  const color = colorDeFeature(feature);
+  if (!color) return null;
+
+  if (props.kind === "agente" && props.nombre) {
+    return { nombre: props.nombre, color };
+  }
+
+  if (props.name && / - /.test(props.name)) {
+    return { nombre: props.name.split(" - ").slice(1).join(" - ").trim(), color };
+  }
+
+  return null;
 }
 
 // -------------------------------------------------------------
@@ -413,11 +563,9 @@ function ocultarStatus() {
 }
 
 // -------------------------------------------------------------
-// Simulación de API (solo para desarrollo/pruebas locales).
-// En vez de generar coordenadas aleatorias, carga un GeoJSON
-// real desde archivo local y lo envuelve en la misma forma
-// que devolvería la API verdadera. Así se prueba el flujo
-// completo (fetch -> extracción -> dibujo) con datos reales.
+// Simulación de API (solo para desarrollo/pruebas locales, modo
+// ?id_ruta=...). Carga un GeoJSON real desde archivo local y lo
+// envuelve en la misma forma que devolvería la API verdadera.
 //
 // El id_ruta de la URL selecciona el archivo: ?id_ruta=2026-05-12
 // carga data/2026-05-12.geojson. Para probar tu propio GeoJSON,
@@ -425,8 +573,8 @@ function ocultarStatus() {
 // FeatureCollection válido) y navega con ese id_ruta.
 // -------------------------------------------------------------
 
-async function simularFetchApi(idRuta, urlSimulada) {
-  console.info(`[simulación] GET ${urlSimulada}`);
+async function obtenerDatosRutaSimulada(idRuta) {
+  console.info(`[simulación] cargando data/${idRuta}.geojson`);
   await esperar(800); // Latencia simulada para poder ver el estado "Cargando..."
 
   // Simula un id de ruta inexistente en el backend.
@@ -438,7 +586,6 @@ async function simularFetchApi(idRuta, urlSimulada) {
 
   return {
     status: "success",
-    metadata: { fecha: "2026-07-21" },
     resultado_ruteo: {
       detalles: `Ruta optimizada para ${idRuta}`,
       mapa_geojson: geoJson,
