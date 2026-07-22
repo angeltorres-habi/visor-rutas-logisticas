@@ -59,6 +59,7 @@ function obtenerIdRutaDesdeUrl() {
 function inicializarMapa() {
   const map = L.map("map", {
     zoomControl: true,
+    zoomSnap: 0, // zoom continuo: evita que fitBounds redondee hacia un zoom que recorte la ruta
   }).setView([4.6097, -74.0817], 6); // Vista inicial: Bogotá, se ajustará luego con fitBounds
 
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -183,12 +184,11 @@ function ocultarStatus() {
 // que devolvería la API verdadera. Así se prueba el flujo
 // completo (fetch -> extracción -> dibujo) con datos reales.
 //
-// Para probar tu propio GeoJSON: reemplaza el contenido de
-// data/ruta-ejemplo.geojson por el tuyo (debe ser un Feature
-// o FeatureCollection válido) y recarga la página.
+// El id_ruta de la URL selecciona el archivo: ?id_ruta=2026-05-12
+// carga data/2026-05-12.geojson. Para probar tu propio GeoJSON,
+// colócalo en data/<id_ruta>.geojson (debe ser un Feature o
+// FeatureCollection válido) y navega con ese id_ruta.
 // -------------------------------------------------------------
-
-const RUTA_GEOJSON_LOCAL = "data/ruta-ejemplo.geojson";
 
 async function simularFetchApi(idRuta, urlSimulada) {
   console.info(`[simulación] GET ${urlSimulada}`);
@@ -199,7 +199,7 @@ async function simularFetchApi(idRuta, urlSimulada) {
     throw new Error(`No se encontró la ruta "${idRuta}" en la API.`);
   }
 
-  const geoJson = await cargarGeoJsonLocal(RUTA_GEOJSON_LOCAL);
+  const geoJson = await cargarGeoJsonLocal(`data/${idRuta}.geojson`);
 
   return {
     status: "success",

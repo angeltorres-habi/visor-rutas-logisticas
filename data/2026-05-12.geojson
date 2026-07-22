@@ -1,0 +1,1365 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.208492,
+          4.635048
+        ]
+      },
+      "properties": {
+        "name": "A0 - OSCAR LEON",
+        "styleUrl": "#icon-1596-880e4f-nodesc",
+        "styleHash": "-20bb0095",
+        "styleMapHash": {
+          "normal": "#icon-1596-880e4f-nodesc-normal",
+          "highlight": "#icon-1596-880e4f-nodesc-highlight"
+        },
+        "description": "<![CDATA[<br>Prioridad: avaluo<br>Avaluo: 1<br>Inicio de obra: 0<br>Remo 360: 0<br>Entrega: 0<br>Garantia/mejoras: 0<br>Avaluo bancario: 0"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.208492,
+            4.635048,
+            0
+          ],
+          [
+            -74.199855174,
+            4.619923723,
+            0
+          ]
+        ]
+      },
+      "properties": {
+        "name": "A0-V25_A_3",
+        "styleUrl": "#line-4f0e88-1200-nodesc",
+        "styleHash": "-6384cf42",
+        "styleMapHash": {
+          "normal": "#line-4f0e88-1200-nodesc-normal",
+          "highlight": "#line-4f0e88-1200-nodesc-highlight"
+        },
+        "description": "9.08m",
+        "stroke": "4f0e88",
+        "stroke-width": 1.2
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.199855174,
+          4.619923723
+        ]
+      },
+      "properties": {
+        "name": "V25_A_3 A",
+        "styleUrl": "#icon-1603-880e4f-nodesc",
+        "styleHash": "-55e6f51c",
+        "styleMapHash": {
+          "normal": "#icon-1603-880e4f-nodesc-normal",
+          "highlight": "#icon-1603-880e4f-nodesc-highlight"
+        },
+        "description": "<![CDATA[<br>Agente: A0 - OSCAR LEON<br>NID: 25<br>Tipo: A<br>Direccion: Carrera 87c # 73b - 07 sur<br>Hora: 08:30am<br>Duracion: 0.83"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.199855174,
+            4.619923723,
+            0
+          ],
+          [
+            -74.2116732028113,
+            4.622886167792988,
+            0
+          ]
+        ]
+      },
+      "properties": {
+        "name": "V25_A_3-V18_A_3",
+        "styleUrl": "#line-4f0e88-1200-nodesc",
+        "styleHash": "-6384cf42",
+        "styleMapHash": {
+          "normal": "#line-4f0e88-1200-nodesc-normal",
+          "highlight": "#line-4f0e88-1200-nodesc-highlight"
+        },
+        "description": "7.79m",
+        "stroke": "4f0e88",
+        "stroke-width": 1.2
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.2116732028113,
+          4.622886167792988
+        ]
+      },
+      "properties": {
+        "name": "V18_A_3 A",
+        "styleUrl": "#icon-1603-880e4f-nodesc",
+        "styleHash": "-55e6f51c",
+        "styleMapHash": {
+          "normal": "#icon-1603-880e4f-nodesc-normal",
+          "highlight": "#icon-1603-880e4f-nodesc-highlight"
+        },
+        "description": "<![CDATA[<br>Agente: A0 - OSCAR LEON<br>NID: 18<br>Tipo: A<br>Direccion: Calle 87 SUR 91-90<br>Hora: 11:30am<br>Duracion: 0.83"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.2116732028113,
+            4.622886167792988,
+            0
+          ],
+          [
+            -74.1944484543096,
+            4.6439791591941555,
+            0
+          ]
+        ]
+      },
+      "properties": {
+        "name": "V18_A_3-V16_A_3",
+        "styleUrl": "#line-4f0e88-1200-nodesc",
+        "styleHash": "-6384cf42",
+        "styleMapHash": {
+          "normal": "#line-4f0e88-1200-nodesc-normal",
+          "highlight": "#line-4f0e88-1200-nodesc-highlight"
+        },
+        "description": "15.91m",
+        "stroke": "4f0e88",
+        "stroke-width": 1.2
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.1944484543096,
+          4.6439791591941555
+        ]
+      },
+      "properties": {
+        "name": "V16_A_3 A",
+        "styleUrl": "#icon-1603-880e4f-nodesc",
+        "styleHash": "-55e6f51c",
+        "styleMapHash": {
+          "normal": "#icon-1603-880e4f-nodesc-normal",
+          "highlight": "#icon-1603-880e4f-nodesc-highlight"
+        },
+        "description": "<![CDATA[<br>Agente: A0 - OSCAR LEON<br>NID: 16<br>Tipo: A<br>Direccion: Calle 55sur # 104 - 49<br>Hora: 01:30pm<br>Duracion: 0.83"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.1944484543096,
+            4.6439791591941555,
+            0
+          ],
+          [
+            -74.20452597153654,
+            4.611563200778114,
+            0
+          ]
+        ]
+      },
+      "properties": {
+        "name": "V16_A_3-V14_A_3",
+        "styleUrl": "#line-4f0e88-1200-nodesc",
+        "styleHash": "-6384cf42",
+        "styleMapHash": {
+          "normal": "#line-4f0e88-1200-nodesc-normal",
+          "highlight": "#line-4f0e88-1200-nodesc-highlight"
+        },
+        "description": "23.81m",
+        "stroke": "4f0e88",
+        "stroke-width": 1.2
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.20452597153654,
+          4.611563200778114
+        ]
+      },
+      "properties": {
+        "name": "V14_A_3 A",
+        "styleUrl": "#icon-1603-880e4f-nodesc",
+        "styleHash": "-55e6f51c",
+        "styleMapHash": {
+          "normal": "#icon-1603-880e4f-nodesc-normal",
+          "highlight": "#icon-1603-880e4f-nodesc-highlight"
+        },
+        "description": "<![CDATA[<br>Agente: A0 - OSCAR LEON<br>NID: 14<br>Tipo: A<br>Direccion: CL 77SUR 80J 45<br>Hora: 03:00pm<br>Duracion: 0.83"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.131938,
+          4.682189
+        ]
+      },
+      "properties": {
+        "name": "A1 - CAMILA TELLEZ",
+        "styleUrl": "#icon-1596-c2185b-nodesc",
+        "styleHash": "-184ca915",
+        "styleMapHash": {
+          "normal": "#icon-1596-c2185b-nodesc-normal",
+          "highlight": "#icon-1596-c2185b-nodesc-highlight"
+        },
+        "description": "<![CDATA[<br>Prioridad: avaluo<br>Avaluo: 1<br>Inicio de obra: 0<br>Remo 360: 0<br>Entrega: 0<br>Garantia/mejoras: 0<br>Avaluo bancario: 0"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.131938,
+            4.682189,
+            0
+          ],
+          [
+            -74.15840052343503,
+            4.688864337428558,
+            0
+          ]
+        ]
+      },
+      "properties": {
+        "name": "A1-V12_A_2",
+        "styleUrl": "#line-5b18c2-1200-nodesc",
+        "styleHash": "33bfcf46",
+        "styleMapHash": {
+          "normal": "#line-5b18c2-1200-nodesc-normal",
+          "highlight": "#line-5b18c2-1200-nodesc-highlight"
+        },
+        "description": "19.68m",
+        "stroke": "5b18c2",
+        "stroke-width": 1.2
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.15840052343503,
+          4.688864337428558
+        ]
+      },
+      "properties": {
+        "name": "V12_A_2 A",
+        "styleUrl": "#icon-1603-c2185b-nodesc",
+        "styleHash": "-4d789d9c",
+        "styleMapHash": {
+          "normal": "#icon-1603-c2185b-nodesc-normal",
+          "highlight": "#icon-1603-c2185b-nodesc-highlight"
+        },
+        "description": "<![CDATA[<br>Agente: A1 - CAMILA TELLEZ<br>NID: 12<br>Tipo: A<br>Direccion: Carrera 123b # 17d - 10<br>Hora: 08:30am<br>Duracion: 0.83"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.15840052343503,
+            4.688864337428558,
+            0
+          ],
+          [
+            -74.16593169891937,
+            4.61129505400001,
+            0
+          ]
+        ]
+      },
+      "properties": {
+        "name": "V12_A_2-V22_A_3",
+        "styleUrl": "#line-5b18c2-1200-nodesc",
+        "styleHash": "33bfcf46",
+        "styleMapHash": {
+          "normal": "#line-5b18c2-1200-nodesc-normal",
+          "highlight": "#line-5b18c2-1200-nodesc-highlight"
+        },
+        "description": "36.83m",
+        "stroke": "5b18c2",
+        "stroke-width": 1.2
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.16593169891937,
+          4.61129505400001
+        ]
+      },
+      "properties": {
+        "name": "V22_A_3 A",
+        "styleUrl": "#icon-1603-c2185b-nodesc",
+        "styleHash": "-4d789d9c",
+        "styleMapHash": {
+          "normal": "#icon-1603-c2185b-nodesc-normal",
+          "highlight": "#icon-1603-c2185b-nodesc-highlight"
+        },
+        "description": "<![CDATA[<br>Agente: A1 - CAMILA TELLEZ<br>NID: 22<br>Tipo: A<br>Direccion: Calle 49 Sur 78-62;apto 502 A Edificios Ben Hur II<br>Hora: 10:00am<br>Duracion: 0.83"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.16593169891937,
+            4.61129505400001,
+            0
+          ],
+          [
+            -74.1686227,
+            4.651187999999999,
+            0
+          ]
+        ]
+      },
+      "properties": {
+        "name": "V22_A_3-V9_A_2",
+        "styleUrl": "#line-5b18c2-1200-nodesc",
+        "styleHash": "33bfcf46",
+        "styleMapHash": {
+          "normal": "#line-5b18c2-1200-nodesc-normal",
+          "highlight": "#line-5b18c2-1200-nodesc-highlight"
+        },
+        "description": "23.83m",
+        "stroke": "5b18c2",
+        "stroke-width": 1.2
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.1686227,
+          4.651187999999999
+        ]
+      },
+      "properties": {
+        "name": "V9_A_2 A",
+        "styleUrl": "#icon-1603-c2185b-nodesc",
+        "styleHash": "-4d789d9c",
+        "styleMapHash": {
+          "normal": "#icon-1603-c2185b-nodesc-normal",
+          "highlight": "#icon-1603-c2185b-nodesc-highlight"
+        },
+        "description": "<![CDATA[<br>Agente: A1 - CAMILA TELLEZ<br>NID: 9<br>Tipo: A<br>Direccion: Cra 98 2 44<br>Hora: 11:30am<br>Duracion: 0.83"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.1686227,
+            4.651187999999999,
+            0
+          ],
+          [
+            -74.13364139386199,
+            4.724441017122568,
+            0
+          ]
+        ]
+      },
+      "properties": {
+        "name": "V9_A_2-V5_A_2",
+        "styleUrl": "#line-5b18c2-1200-nodesc",
+        "styleHash": "33bfcf46",
+        "styleMapHash": {
+          "normal": "#line-5b18c2-1200-nodesc-normal",
+          "highlight": "#line-5b18c2-1200-nodesc-highlight"
+        },
+        "description": "50.88m",
+        "stroke": "5b18c2",
+        "stroke-width": 1.2
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.13364139386199,
+          4.724441017122568
+        ]
+      },
+      "properties": {
+        "name": "V5_A_2 A",
+        "styleUrl": "#icon-1603-c2185b-nodesc",
+        "styleHash": "-4d789d9c",
+        "styleMapHash": {
+          "normal": "#icon-1603-c2185b-nodesc-normal",
+          "highlight": "#icon-1603-c2185b-nodesc-highlight"
+        },
+        "description": "<![CDATA[<br>Agente: A1 - CAMILA TELLEZ<br>NID: 5<br>Tipo: A<br>Direccion: Calle 78b # 120a - 55<br>Hora: 03:00pm<br>Duracion: 0.83"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.169635,
+          4.634623
+        ]
+      },
+      "properties": {
+        "name": "A2 - LEONARDO MELENDEZ",
+        "styleUrl": "#icon-1596-a52714-nodesc",
+        "styleHash": "-7a1eedf5",
+        "styleMapHash": {
+          "normal": "#icon-1596-a52714-nodesc-normal",
+          "highlight": "#icon-1596-a52714-nodesc-highlight"
+        },
+        "description": "<![CDATA[<br>Prioridad: avaluo<br>Avaluo: 1<br>Inicio de obra: 0<br>Remo 360: 0<br>Entrega: 0<br>Garantia/mejoras: 0<br>Avaluo bancario: 0"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.169635,
+            4.634623,
+            0
+          ],
+          [
+            -74.20912281392997,
+            4.574492330893164,
+            0
+          ]
+        ]
+      },
+      "properties": {
+        "name": "A2-V23_A_3",
+        "styleUrl": "#line-1427a5-1200-nodesc",
+        "styleHash": "476eee94",
+        "styleMapHash": {
+          "normal": "#line-1427a5-1200-nodesc-normal",
+          "highlight": "#line-1427a5-1200-nodesc-highlight"
+        },
+        "description": "25.29m",
+        "stroke": "1427a5",
+        "stroke-width": 1.2
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.20912281392997,
+          4.574492330893164
+        ]
+      },
+      "properties": {
+        "name": "V23_A_3 A",
+        "styleUrl": "#icon-1603-a52714-nodesc",
+        "styleHash": "50b51d84",
+        "styleMapHash": {
+          "normal": "#icon-1603-a52714-nodesc-normal",
+          "highlight": "#icon-1603-a52714-nodesc-highlight"
+        },
+        "description": "<![CDATA[<br>Agente: A2 - LEONARDO MELENDEZ<br>NID: 23<br>Tipo: A<br>Direccion: Calle 17 # 30 - 55<br>Hora: 08:30am<br>Duracion: 0.83"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.20912281392997,
+            4.574492330893164,
+            0
+          ],
+          [
+            -74.21462122801539,
+            4.608667453580216,
+            0
+          ]
+        ]
+      },
+      "properties": {
+        "name": "V23_A_3-V20_A_3",
+        "styleUrl": "#line-1427a5-1200-nodesc",
+        "styleHash": "476eee94",
+        "styleMapHash": {
+          "normal": "#line-1427a5-1200-nodesc-normal",
+          "highlight": "#line-1427a5-1200-nodesc-highlight"
+        },
+        "description": "19.86m",
+        "stroke": "1427a5",
+        "stroke-width": 1.2
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.21462122801539,
+          4.608667453580216
+        ]
+      },
+      "properties": {
+        "name": "V20_A_3 A",
+        "styleUrl": "#icon-1603-a52714-nodesc",
+        "styleHash": "50b51d84",
+        "styleMapHash": {
+          "normal": "#icon-1603-a52714-nodesc-normal",
+          "highlight": "#icon-1603-a52714-nodesc-highlight"
+        },
+        "description": "<![CDATA[<br>Agente: A2 - LEONARDO MELENDEZ<br>NID: 20<br>Tipo: A<br>Direccion: TV 32 A # 34 - 21 Y 34<br>Hora: 11:30am<br>Duracion: 0.83"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.21462122801539,
+            4.608667453580216,
+            0
+          ],
+          [
+            -74.1944484543096,
+            4.6439791591941555,
+            0
+          ]
+        ]
+      },
+      "properties": {
+        "name": "V20_A_3-V17_A_3",
+        "styleUrl": "#line-1427a5-1200-nodesc",
+        "styleHash": "476eee94",
+        "styleMapHash": {
+          "normal": "#line-1427a5-1200-nodesc-normal",
+          "highlight": "#line-1427a5-1200-nodesc-highlight"
+        },
+        "description": "26.48m",
+        "stroke": "1427a5",
+        "stroke-width": 1.2
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.1944484543096,
+          4.6439791591941555
+        ]
+      },
+      "properties": {
+        "name": "V17_A_3 A",
+        "styleUrl": "#icon-1603-a52714-nodesc",
+        "styleHash": "50b51d84",
+        "styleMapHash": {
+          "normal": "#icon-1603-a52714-nodesc-normal",
+          "highlight": "#icon-1603-a52714-nodesc-highlight"
+        },
+        "description": "<![CDATA[<br>Agente: A2 - LEONARDO MELENDEZ<br>NID: 17<br>Tipo: A<br>Direccion: Calle 55sur # 104 - 49<br>Hora: 01:30pm<br>Duracion: 0.83"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.1944484543096,
+            4.6439791591941555,
+            0
+          ],
+          [
+            -74.212400823803,
+            4.604643565171023,
+            0
+          ]
+        ]
+      },
+      "properties": {
+        "name": "V17_A_3-V15_A_3",
+        "styleUrl": "#line-1427a5-1200-nodesc",
+        "styleHash": "476eee94",
+        "styleMapHash": {
+          "normal": "#line-1427a5-1200-nodesc-normal",
+          "highlight": "#line-1427a5-1200-nodesc-highlight"
+        },
+        "description": "23.81m",
+        "stroke": "1427a5",
+        "stroke-width": 1.2
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.212400823803,
+          4.604643565171023
+        ]
+      },
+      "properties": {
+        "name": "V15_A_3 A",
+        "styleUrl": "#icon-1603-a52714-nodesc",
+        "styleHash": "50b51d84",
+        "styleMapHash": {
+          "normal": "#icon-1603-a52714-nodesc-normal",
+          "highlight": "#icon-1603-a52714-nodesc-highlight"
+        },
+        "description": "<![CDATA[<br>Agente: A2 - LEONARDO MELENDEZ<br>NID: 15<br>Tipo: A<br>Direccion: Calle 81 # 80l-20<br>Hora: 03:00pm<br>Duracion: 0.83"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.178582,
+          4.616041
+        ]
+      },
+      "properties": {
+        "name": "A3 - JAIRO LAITON",
+        "styleUrl": "#icon-1596-ff5252-nodesc",
+        "styleHash": "-44dd2235",
+        "styleMapHash": {
+          "normal": "#icon-1596-ff5252-nodesc-normal",
+          "highlight": "#icon-1596-ff5252-nodesc-highlight"
+        },
+        "description": "<![CDATA[<br>Prioridad: avaluo<br>Avaluo: 1<br>Inicio de obra: 0<br>Remo 360: 0<br>Entrega: 0<br>Garantia/mejoras: 0<br>Avaluo bancario: 0"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.178582,
+            4.616041,
+            0
+          ],
+          [
+            -74.19521839924188,
+            4.587321913437632,
+            0
+          ]
+        ]
+      },
+      "properties": {
+        "name": "A3-V24_A_3",
+        "styleUrl": "#line-5252ff-1200-nodesc",
+        "styleHash": "-6122b428",
+        "styleMapHash": {
+          "normal": "#line-5252ff-1200-nodesc-normal",
+          "highlight": "#line-5252ff-1200-nodesc-highlight"
+        },
+        "description": "17.09m",
+        "stroke": "5252ff",
+        "stroke-width": 1.2
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.19521839924188,
+          4.587321913437632
+        ]
+      },
+      "properties": {
+        "name": "V24_A_3 A",
+        "styleUrl": "#icon-1603-ff5252-nodesc",
+        "styleHash": "-7a0916bc",
+        "styleMapHash": {
+          "normal": "#icon-1603-ff5252-nodesc-normal",
+          "highlight": "#icon-1603-ff5252-nodesc-highlight"
+        },
+        "description": "<![CDATA[<br>Agente: A3 - JAIRO LAITON<br>NID: 24<br>Tipo: A<br>Direccion: Calle 38 # 1 - 50<br>Hora: 08:30am<br>Duracion: 0.83"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.19521839924188,
+            4.587321913437632,
+            0
+          ],
+          [
+            -74.2009738,
+            4.6142066,
+            0
+          ]
+        ]
+      },
+      "properties": {
+        "name": "V24_A_3-V19_A_3",
+        "styleUrl": "#line-5252ff-1200-nodesc",
+        "styleHash": "-6122b428",
+        "styleMapHash": {
+          "normal": "#line-5252ff-1200-nodesc-normal",
+          "highlight": "#line-5252ff-1200-nodesc-highlight"
+        },
+        "description": "19.86m",
+        "stroke": "5252ff",
+        "stroke-width": 1.2
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.2009738,
+          4.6142066
+        ]
+      },
+      "properties": {
+        "name": "V19_A_3 A",
+        "styleUrl": "#icon-1603-ff5252-nodesc",
+        "styleHash": "-7a0916bc",
+        "styleMapHash": {
+          "normal": "#icon-1603-ff5252-nodesc-normal",
+          "highlight": "#icon-1603-ff5252-nodesc-highlight"
+        },
+        "description": "<![CDATA[<br>Agente: A3 - JAIRO LAITON<br>NID: 19<br>Tipo: A<br>Direccion: Calle 81h # 75 - 85<br>Hora: 11:30am<br>Duracion: 0.83"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.2009738,
+            4.6142066,
+            0
+          ],
+          [
+            -74.08101748261383,
+            4.623508183500007,
+            0
+          ]
+        ]
+      },
+      "properties": {
+        "name": "V19_A_3-V7_A_2",
+        "styleUrl": "#line-5252ff-1200-nodesc",
+        "styleHash": "-6122b428",
+        "styleMapHash": {
+          "normal": "#line-5252ff-1200-nodesc-normal",
+          "highlight": "#line-5252ff-1200-nodesc-highlight"
+        },
+        "description": "69.01m",
+        "stroke": "5252ff",
+        "stroke-width": 1.2
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.08101748261383,
+          4.623508183500007
+        ]
+      },
+      "properties": {
+        "name": "V7_A_2 A",
+        "styleUrl": "#icon-1603-ff5252-nodesc",
+        "styleHash": "-7a0916bc",
+        "styleMapHash": {
+          "normal": "#icon-1603-ff5252-nodesc-normal",
+          "highlight": "#icon-1603-ff5252-nodesc-highlight"
+        },
+        "description": "<![CDATA[<br>Agente: A3 - JAIRO LAITON<br>NID: 7<br>Tipo: A<br>Direccion: Calle 24 # 28 - 18<br>Hora: 01:30pm<br>Duracion: 0.83"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.08101748261383,
+            4.623508183500007,
+            0
+          ],
+          [
+            -74.08408867888694,
+            4.666195885811443,
+            0
+          ]
+        ]
+      },
+      "properties": {
+        "name": "V7_A_2-V4_A_2",
+        "styleUrl": "#line-5252ff-1200-nodesc",
+        "styleHash": "-6122b428",
+        "styleMapHash": {
+          "normal": "#line-5252ff-1200-nodesc-normal",
+          "highlight": "#line-5252ff-1200-nodesc-highlight"
+        },
+        "description": "22.14m",
+        "stroke": "5252ff",
+        "stroke-width": 1.2
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.08408867888694,
+          4.666195885811443
+        ]
+      },
+      "properties": {
+        "name": "V4_A_2 A",
+        "styleUrl": "#icon-1603-ff5252-nodesc",
+        "styleHash": "-7a0916bc",
+        "styleMapHash": {
+          "normal": "#icon-1603-ff5252-nodesc-normal",
+          "highlight": "#icon-1603-ff5252-nodesc-highlight"
+        },
+        "description": "<![CDATA[<br>Agente: A3 - JAIRO LAITON<br>NID: 4<br>Tipo: A<br>Direccion: CL 66 59 31<br>Hora: 03:00pm<br>Duracion: 0.83"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.188994,
+          4.63506
+        ]
+      },
+      "properties": {
+        "name": "A4 - ESDER GOMEZ",
+        "styleUrl": "#icon-1596-e65100-nodesc",
+        "styleHash": "-661e6bd5",
+        "styleMapHash": {
+          "normal": "#icon-1596-e65100-nodesc-normal",
+          "highlight": "#icon-1596-e65100-nodesc-highlight"
+        },
+        "description": "<![CDATA[<br>Prioridad: avaluo<br>Avaluo: 1<br>Inicio de obra: 0<br>Remo 360: 0<br>Entrega: 0<br>Garantia/mejoras: 0<br>Avaluo bancario: 0"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.188994,
+            4.63506,
+            0
+          ],
+          [
+            -74.1733457,
+            4.651053999999999,
+            0
+          ]
+        ]
+      },
+      "properties": {
+        "name": "A4-V13_A_2",
+        "styleUrl": "#line-0051e6-1200-nodesc",
+        "styleHash": "-2c988f8e",
+        "styleMapHash": {
+          "normal": "#line-0051e6-1200-nodesc-normal",
+          "highlight": "#line-0051e6-1200-nodesc-highlight"
+        },
+        "description": "20.75m",
+        "stroke": "0051e6",
+        "stroke-width": 1.2
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.1733457,
+          4.651053999999999
+        ]
+      },
+      "properties": {
+        "name": "V13_A_2 A",
+        "styleUrl": "#icon-1603-e65100-nodesc",
+        "styleHash": "64b59fa4",
+        "styleMapHash": {
+          "normal": "#icon-1603-e65100-nodesc-normal",
+          "highlight": "#icon-1603-e65100-nodesc-highlight"
+        },
+        "description": "<![CDATA[<br>Agente: A4 - ESDER GOMEZ<br>NID: 13<br>Tipo: A<br>Direccion: CL 34A SUR 99A 37<br>Hora: 08:30am<br>Duracion: 0.83"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.1733457,
+            4.651053999999999,
+            0
+          ],
+          [
+            -74.08144820696496,
+            4.608313816763989,
+            0
+          ]
+        ]
+      },
+      "properties": {
+        "name": "V13_A_2-V10_A_2",
+        "styleUrl": "#line-0051e6-1200-nodesc",
+        "styleHash": "-2c988f8e",
+        "styleMapHash": {
+          "normal": "#line-0051e6-1200-nodesc-normal",
+          "highlight": "#line-0051e6-1200-nodesc-highlight"
+        },
+        "description": "31.52m",
+        "stroke": "0051e6",
+        "stroke-width": 1.2
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.08144820696496,
+          4.608313816763989
+        ]
+      },
+      "properties": {
+        "name": "V10_A_2 A",
+        "styleUrl": "#icon-1603-e65100-nodesc",
+        "styleHash": "64b59fa4",
+        "styleMapHash": {
+          "normal": "#icon-1603-e65100-nodesc-normal",
+          "highlight": "#icon-1603-e65100-nodesc-highlight"
+        },
+        "description": "<![CDATA[<br>Agente: A4 - ESDER GOMEZ<br>NID: 10<br>Tipo: A<br>Direccion: Carrera 18 # 15 - 36<br>Hora: 10:00am<br>Duracion: 0.83"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.08144820696496,
+            4.608313816763989,
+            0
+          ],
+          [
+            -74.1520196946232,
+            4.646382676209138,
+            0
+          ]
+        ]
+      },
+      "properties": {
+        "name": "V10_A_2-V8_A_2",
+        "styleUrl": "#line-0051e6-1200-nodesc",
+        "styleHash": "-2c988f8e",
+        "styleMapHash": {
+          "normal": "#line-0051e6-1200-nodesc-normal",
+          "highlight": "#line-0051e6-1200-nodesc-highlight"
+        },
+        "description": "27.65m",
+        "stroke": "0051e6",
+        "stroke-width": 1.2
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.1520196946232,
+          4.646382676209138
+        ]
+      },
+      "properties": {
+        "name": "V8_A_2 A",
+        "styleUrl": "#icon-1603-e65100-nodesc",
+        "styleHash": "64b59fa4",
+        "styleMapHash": {
+          "normal": "#icon-1603-e65100-nodesc-normal",
+          "highlight": "#icon-1603-e65100-nodesc-highlight"
+        },
+        "description": "<![CDATA[<br>Agente: A4 - ESDER GOMEZ<br>NID: 8<br>Tipo: A<br>Direccion: Calle 8 # 86 - 65<br>Hora: 11:30am<br>Duracion: 0.83"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.1520196946232,
+            4.646382676209138,
+            0
+          ],
+          [
+            -74.14494570315816,
+            4.682193938500006,
+            0
+          ]
+        ]
+      },
+      "properties": {
+        "name": "V8_A_2-V6_A_2",
+        "styleUrl": "#line-0051e6-1200-nodesc",
+        "styleHash": "-2c988f8e",
+        "styleMapHash": {
+          "normal": "#line-0051e6-1200-nodesc-normal",
+          "highlight": "#line-0051e6-1200-nodesc-highlight"
+        },
+        "description": "35.16m",
+        "stroke": "0051e6",
+        "stroke-width": 1.2
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.14494570315816,
+          4.682193938500006
+        ]
+      },
+      "properties": {
+        "name": "V6_A_2 A",
+        "styleUrl": "#icon-1603-e65100-nodesc",
+        "styleHash": "64b59fa4",
+        "styleMapHash": {
+          "normal": "#icon-1603-e65100-nodesc-normal",
+          "highlight": "#icon-1603-e65100-nodesc-highlight"
+        },
+        "description": "<![CDATA[<br>Agente: A4 - ESDER GOMEZ<br>NID: 6<br>Tipo: A<br>Direccion: Carrera 108 # 22F-16<br>Hora: 01:30pm<br>Duracion: 0.83"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.080436,
+          4.649806
+        ]
+      },
+      "properties": {
+        "name": "A5 - JUAN ROBLES",
+        "styleUrl": "#icon-1596-f9a825-nodesc",
+        "styleHash": "-58ef2bd5",
+        "styleMapHash": {
+          "normal": "#icon-1596-f9a825-nodesc-normal",
+          "highlight": "#icon-1596-f9a825-nodesc-highlight"
+        },
+        "description": "<![CDATA[<br>Prioridad: avaluo<br>Avaluo: 1<br>Inicio de obra: 0<br>Remo 360: 0<br>Entrega: 0<br>Garantia/mejoras: 0<br>Avaluo bancario: 0"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.080436,
+            4.649806,
+            0
+          ],
+          [
+            -74.0855364113098,
+            4.756696005097167,
+            0
+          ]
+        ]
+      },
+      "properties": {
+        "name": "A5-V3_A_1",
+        "styleUrl": "#line-25a8f9-1200-nodesc",
+        "styleHash": "12d50d72",
+        "styleMapHash": {
+          "normal": "#line-25a8f9-1200-nodesc-normal",
+          "highlight": "#line-25a8f9-1200-nodesc-highlight"
+        },
+        "description": "39.35m",
+        "stroke": "25a8f9",
+        "stroke-width": 1.2
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.0855364113098,
+          4.756696005097167
+        ]
+      },
+      "properties": {
+        "name": "V3_A_1 A",
+        "styleUrl": "#icon-1603-f9a825-nodesc",
+        "styleHash": "71e4dfa4",
+        "styleMapHash": {
+          "normal": "#icon-1603-f9a825-nodesc-normal",
+          "highlight": "#icon-1603-f9a825-nodesc-highlight"
+        },
+        "description": "<![CDATA[<br>Agente: A5 - JUAN ROBLES<br>NID: 3<br>Tipo: A<br>Direccion: Carrera 99 # 157 - 43<br>Hora: 10:00am<br>Duracion: 0.83"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.0855364113098,
+            4.756696005097167,
+            0
+          ],
+          [
+            -74.02693527641398,
+            4.7494543645614,
+            0
+          ]
+        ]
+      },
+      "properties": {
+        "name": "V3_A_1-V2_A_1",
+        "styleUrl": "#line-25a8f9-1200-nodesc",
+        "styleHash": "12d50d72",
+        "styleMapHash": {
+          "normal": "#line-25a8f9-1200-nodesc-normal",
+          "highlight": "#line-25a8f9-1200-nodesc-highlight"
+        },
+        "description": "25.7m",
+        "stroke": "25a8f9",
+        "stroke-width": 1.2
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.02693527641398,
+          4.7494543645614
+        ]
+      },
+      "properties": {
+        "name": "V2_A_1 A",
+        "styleUrl": "#icon-1603-f9a825-nodesc",
+        "styleHash": "71e4dfa4",
+        "styleMapHash": {
+          "normal": "#icon-1603-f9a825-nodesc-normal",
+          "highlight": "#icon-1603-f9a825-nodesc-highlight"
+        },
+        "description": "<![CDATA[<br>Agente: A5 - JUAN ROBLES<br>NID: 2<br>Tipo: A<br>Direccion: Carrera 8 # 170 - 52<br>Hora: 11:30am<br>Duracion: 0.83"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.02693527641398,
+            4.7494543645614,
+            0
+          ],
+          [
+            -74.04504166953822,
+            4.726406774000026,
+            0
+          ]
+        ]
+      },
+      "properties": {
+        "name": "V2_A_1-V1_A_1",
+        "styleUrl": "#line-25a8f9-1200-nodesc",
+        "styleHash": "12d50d72",
+        "styleMapHash": {
+          "normal": "#line-25a8f9-1200-nodesc-normal",
+          "highlight": "#line-25a8f9-1200-nodesc-highlight"
+        },
+        "description": "14.16m",
+        "stroke": "25a8f9",
+        "stroke-width": 1.2
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.04504166953822,
+          4.726406774000026
+        ]
+      },
+      "properties": {
+        "name": "V1_A_1 A",
+        "styleUrl": "#icon-1603-f9a825-nodesc",
+        "styleHash": "71e4dfa4",
+        "styleMapHash": {
+          "normal": "#icon-1603-f9a825-nodesc-normal",
+          "highlight": "#icon-1603-f9a825-nodesc-highlight"
+        },
+        "description": "<![CDATA[<br>Agente: A5 - JUAN ROBLES<br>NID: 1<br>Tipo: A<br>Direccion: Calle 145 #17-75<br>Hora: 01:30pm<br>Duracion: 0.83"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [
+            -74.04504166953822,
+            4.726406774000026,
+            0
+          ],
+          [
+            -74.03008933588275,
+            4.740592777532795,
+            0
+          ]
+        ]
+      },
+      "properties": {
+        "name": "V1_A_1-V0_A_1",
+        "styleUrl": "#line-25a8f9-1200-nodesc",
+        "styleHash": "12d50d72",
+        "styleMapHash": {
+          "normal": "#line-25a8f9-1200-nodesc-normal",
+          "highlight": "#line-25a8f9-1200-nodesc-highlight"
+        },
+        "description": "12.97m",
+        "stroke": "25a8f9",
+        "stroke-width": 1.2
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.03008933588275,
+          4.740592777532795
+        ]
+      },
+      "properties": {
+        "name": "V0_A_1 A",
+        "styleUrl": "#icon-1603-f9a825-nodesc",
+        "styleHash": "71e4dfa4",
+        "styleMapHash": {
+          "normal": "#icon-1603-f9a825-nodesc-normal",
+          "highlight": "#icon-1603-f9a825-nodesc-highlight"
+        },
+        "description": "<![CDATA[<br>Agente: A5 - JUAN ROBLES<br>NID: 0<br>Tipo: A<br>Direccion: Carrera 8f bis a # 163b - 09<br>Hora: 03:00pm<br>Duracion: 0.83"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.11525537616576,
+          4.534975032059496
+        ]
+      },
+      "properties": {
+        "name": "V21_A_3 A",
+        "styleUrl": "#icon-1603-000000-nodesc",
+        "styleHash": "717b8a04",
+        "styleMapHash": {
+          "normal": "#icon-1603-000000-nodesc-normal",
+          "highlight": "#icon-1603-000000-nodesc-highlight"
+        },
+        "description": "<![CDATA[<br>Agente: Sin asignar<br>NID: 21<br>Tipo: A<br>Direccion: Calle 65sur # 1c - 50este<br>Hora: 10:00am<br>Duracion: 0.83"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -74.06271631274474,
+          4.631297938000017
+        ]
+      },
+      "properties": {
+        "name": "V11_A_2 A",
+        "styleUrl": "#icon-1603-000000-nodesc",
+        "styleHash": "717b8a04",
+        "styleMapHash": {
+          "normal": "#icon-1603-000000-nodesc-normal",
+          "highlight": "#icon-1603-000000-nodesc-highlight"
+        },
+        "description": "<![CDATA[<br>Agente: Sin asignar<br>NID: 11<br>Tipo: A<br>Direccion: Calle 45 # 5 - 10<br>Hora: 10:00am<br>Duracion: 0.83"
+      }
+    }
+  ]
+}
