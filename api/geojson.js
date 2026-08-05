@@ -12,7 +12,8 @@
  *   KV_REST_API_READ_ONLY_TOKEN
  *
  * GET /api/geojson?ciudad=bogota&fecha=2026-08-05
- * -> { result: <geojson u otro valor guardado> | null }
+ * -> 200 con el GeoJSON (Feature/FeatureCollection) ya desescapado, o
+ * -> 404 { message: "No hay rutas para esta fecha" } si no hay datos.
  */
 
 const KV_URL = process.env.KV_REST_API_URL || "TU_KV_REST_API_URL";
@@ -47,9 +48,42 @@ module.exports = async function handler(req, res) {
     }
 
     const data = await respuesta.json();
-    res.status(200).json({ result: data.result ?? null });
+    const geoJson = desescaparResultado(data.result, key);
+
+    const sinRutas = !geoJson || (Array.isArray(geoJson.features) && geoJson.features.length === 0);
+    if (sinRutas) {
+      res.status(404).json({ message: "No hay rutas para esta fecha" });
+      return;
+    }
+
+    res.status(200).json(geoJson);
   } catch (error) {
     console.error(`Error consultando KV para la llave "${key}":`, error);
     res.status(500).json({ error: "No se pudo consultar la base KV." });
   }
 };
+
+/**
+ * Upstash puede devolver el valor como objeto ya parseado, como JSON
+ * en texto, o como JSON doblemente escapado (string dentro de string,
+ * típico de cómo algunos clientes guardan el geojson). Se intenta
+ * JSON.parse hasta dos veces para llegar al objeto real.
+ *
+ * @param {unknown} resultado - data.result crudo devuelto por Upstash
+ * @param {string} key - solo para logs de error
+ * @returns {Object|null}
+ */
+function desescaparResultado(resultado, key) {
+  let valor = resultado ?? null;
+
+  for (let intento = 0; intento < 2 && typeof valor === "string"; intento++) {
+    try {
+      valor = JSON.parse(valor);
+    } catch (error) {
+      console.error(`No se pudo parsear (intento ${intento + 1}) el resultado de la llave "${key}":`, error);
+      return null;
+    }
+  }
+
+  return typeof valor === "object" ? valor : null;
+}

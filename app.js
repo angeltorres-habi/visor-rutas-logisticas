@@ -140,15 +140,15 @@ async function obtenerGeoJsonDesdeKV(ciudad, fecha) {
     const respuesta = await fetch(
       `/api/geojson?ciudad=${encodeURIComponent(ciudad)}&fecha=${encodeURIComponent(fecha)}`
     );
+
+    if (respuesta.status === 404) return null;
+
     if (!respuesta.ok) {
       console.error(`El proxy de KV respondió con estado ${respuesta.status} para la llave "${key}".`);
       return null;
     }
 
-    const data = await respuesta.json();
-    if (!data || data.result === null || data.result === undefined) return null;
-
-    return typeof data.result === "string" ? JSON.parse(data.result) : data.result;
+    return await respuesta.json();
   } catch (error) {
     console.error(`Error al leer KV para la llave "${key}":`, error);
     return null;
