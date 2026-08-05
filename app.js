@@ -3,17 +3,13 @@
  * ---------------------------------------------------------
  * Dos modos, según el parámetro que traiga la URL:
  *
- *  - ?ciudad=bogota   -> modo API real: llama al backend de
- *    ruteo y renderiza su map_geojson. Al terminar, agrega
- *    "&fecha=YYYY-MM-DD" (hoy) a la URL del navegador.
+ *  - ?ciudad=...&fecha=...  -> modo KV: lee el GeoJSON de la ruta
+ *    desde Vercel KV / Upstash Redis (llave "ciudad_fecha") a través
+ *    del proxy serverless api/geojson.js. Si faltan, usa "bogota" y
+ *    la fecha de hoy por defecto, y refleja ambos en la URL.
  *  - ?id_ruta=Ruta01  -> modo archivo local: carga
  *    data/<id_ruta>.geojson (para pruebas sin backend).
  */
-
-// Backend intermedio que arma el payload completo (visitas + visitadores)
-// y llama a /get_visit_routes, devolviendo el resultado ya resuelto para
-// una ciudad. TODO: reemplazar por la URL real cuando ese backend exista.
-const API_ROUTING_URL = "https://TU-BACKEND-INTERMEDIO.example.com/ruta";
 
 // Referencia global al mapa (se crea una sola vez).
 let mapa = null;
@@ -24,18 +20,7 @@ let mapa = null;
  */
 async function main() {
   const params = new URLSearchParams(window.location.search);
-  const ciudad = (params.get("ciudad") || "").trim();
   const idRuta = (params.get("id_ruta") || "").trim();
-
-  if (ciudad) {
-    await ejecutarFlujo({
-      titulo: `Ciudad: ${ciudad}`,
-      mensajeCargando: `Consultando rutas de "${ciudad}"...`,
-      obtenerJson: () => obtenerDatosRutaApi(ciudad),
-      alTerminar: agregarFechaDeHoyALaUrl,
-    });
-    return;
-  }
 
   if (idRuta) {
     await ejecutarFlujo({
@@ -46,11 +31,15 @@ async function main() {
     return;
   }
 
-  mostrarError(
-    "Falta el parámetro 'ciudad' en la URL. " +
-      "Agrega algo como ?ciudad=bogota al final del enlace " +
-      "(o ?id_ruta=Ruta01 para pruebas con archivos locales)."
-  );
+  const ciudad = (params.get("ciudad") || "bogota").trim();
+  const fecha = (params.get("fecha") || fechaDeHoy()).trim();
+
+  await ejecutarFlujo({
+    titulo: `Ciudad: ${ciudad} (${fecha})`,
+    mensajeCargando: `Consultando rutas de "${ciudad}" para ${fecha}...`,
+    obtenerJson: () => obtenerRutaDesdeKV(ciudad, fecha),
+    alTerminar: () => asegurarParametrosEnUrl(ciudad, fecha),
+  });
 }
 
 /**
@@ -82,21 +71,36 @@ async function ejecutarFlujo({ titulo, mensajeCargando, obtenerJson, alTerminar 
 }
 
 /**
- * Agrega "fecha=YYYY-MM-DD" (hoy, hora local) a la URL del navegador
- * sin recargar la página, para que el link refleje el día en que se
- * consultó la ruta. No pisa una fecha que ya venga en la URL.
+ * Fecha de hoy en hora local, formato YYYY-MM-DD.
  */
-function agregarFechaDeHoyALaUrl() {
-  const url = new URL(window.location.href);
-  if (url.searchParams.get("fecha")) return;
-
+function fechaDeHoy() {
   const hoy = new Date();
   const año = hoy.getFullYear();
   const mes = String(hoy.getMonth() + 1).padStart(2, "0");
   const dia = String(hoy.getDate()).padStart(2, "0");
+  return `${año}-${mes}-${dia}`;
+}
 
-  url.searchParams.set("fecha", `${año}-${mes}-${dia}`);
-  window.history.replaceState({}, "", url);
+/**
+ * Refleja "ciudad" y "fecha" en la URL del navegador sin recargar la
+ * página, para que el link se pueda compartir tal cual reproduce la
+ * misma ruta (incluso cuando vinieron de un valor por defecto). No
+ * pisa valores que ya vengan en la URL.
+ */
+function asegurarParametrosEnUrl(ciudad, fecha) {
+  const url = new URL(window.location.href);
+  let cambio = false;
+
+  if (!url.searchParams.get("ciudad")) {
+    url.searchParams.set("ciudad", ciudad);
+    cambio = true;
+  }
+  if (!url.searchParams.get("fecha")) {
+    url.searchParams.set("fecha", fecha);
+    cambio = true;
+  }
+
+  if (cambio) window.history.replaceState({}, "", url);
 }
 
 /**
@@ -118,27 +122,56 @@ function inicializarMapa() {
 }
 
 /**
- * Llama al backend de ruteo real para una ciudad dada.
+ * Lee el GeoJSON de una ruta desde Vercel KV / Upstash Redis, para la
+ * llave "ciudad_fecha", a través del proxy serverless api/geojson.js.
  *
- * NOTA: este backend intermedio arma el payload completo que espera
- * /get_visit_routes (visitas + visitadores del día) y expone algo
- * simple para el visor. Mientras no exista, esta función fallará con
- * un error de red claro — reemplaza API_ROUTING_URL cuando esté listo.
- *
- * Cualquier token/API key que ese backend necesite para llamar a
- * /get_visit_routes debe vivir en el backend, nunca aquí: este es
+ * El token de acceso a Upstash vive únicamente en ese proxy (variables
+ * de entorno del servidor) y nunca llega a este archivo: app.js es
  * código estático que cualquiera puede leer en el navegador.
  *
  * @param {string} ciudad
- * @returns {Promise<Object>} JSON crudo devuelto por la API
+ * @param {string} fecha - formato YYYY-MM-DD
+ * @returns {Promise<Object|null>} GeoJSON ya parseado, o null si no hay datos
  */
-async function obtenerDatosRutaApi(ciudad) {
-  const url = `${API_ROUTING_URL}?ciudad=${encodeURIComponent(ciudad)}`;
-  const respuesta = await fetch(url);
-  if (!respuesta.ok) {
-    throw new Error(`La API de ruteo respondió con estado ${respuesta.status} para "${ciudad}".`);
+async function obtenerGeoJsonDesdeKV(ciudad, fecha) {
+  const key = `${ciudad}_${fecha}`;
+
+  try {
+    const respuesta = await fetch(
+      `/api/geojson?ciudad=${encodeURIComponent(ciudad)}&fecha=${encodeURIComponent(fecha)}`
+    );
+    if (!respuesta.ok) {
+      console.error(`El proxy de KV respondió con estado ${respuesta.status} para la llave "${key}".`);
+      return null;
+    }
+
+    const data = await respuesta.json();
+    if (!data || data.result === null || data.result === undefined) return null;
+
+    return typeof data.result === "string" ? JSON.parse(data.result) : data.result;
+  } catch (error) {
+    console.error(`Error al leer KV para la llave "${key}":`, error);
+    return null;
   }
-  return await respuesta.json();
+}
+
+/**
+ * Envuelve obtenerGeoJsonDesdeKV para usarla dentro de ejecutarFlujo:
+ * si no hay ruta para esa ciudad/fecha, avisa en consola y lanza un
+ * error que ejecutarFlujo muestra en pantalla (mostrarError).
+ *
+ * @param {string} ciudad
+ * @param {string} fecha
+ * @returns {Promise<Object>} GeoJSON
+ */
+async function obtenerRutaDesdeKV(ciudad, fecha) {
+  const geoJson = await obtenerGeoJsonDesdeKV(ciudad, fecha);
+  if (!geoJson) {
+    const mensaje = `No hay rutas registradas para "${ciudad}" en la fecha ${fecha}.`;
+    console.warn(`[KV] ${mensaje} (llave "${ciudad}_${fecha}")`);
+    throw new Error(mensaje);
+  }
+  return geoJson;
 }
 
 /**
@@ -155,17 +188,25 @@ function procesarYExtraerGeoJson(jsonComplejo) {
     jsonComplejo?.data?.map_geojson,
     jsonComplejo?.resultado_ruteo?.mapa_geojson,
     jsonComplejo?.map_geojson,
+    esGeoJson(jsonComplejo) ? jsonComplejo : null,
   ];
   const geoJson = candidatos.find((candidato) => candidato && typeof candidato === "object");
 
   if (!geoJson) {
     throw new Error(
       "La respuesta de la API no contiene un GeoJSON reconocible " +
-        "(se buscó en data.map_geojson y resultado_ruteo.mapa_geojson)."
+        "(se buscó en data.map_geojson, resultado_ruteo.mapa_geojson y en la raíz)."
     );
   }
 
   return geoJson;
+}
+
+// Detecta si un objeto ya es, en sí mismo, un GeoJSON (Feature o
+// FeatureCollection) en vez de venir envuelto en otra estructura —
+// caso del valor que devuelve el proxy de KV (obtenerGeoJsonDesdeKV).
+function esGeoJson(obj) {
+  return Boolean(obj) && (obj.type === "FeatureCollection" || obj.type === "Feature");
 }
 
 const COLOR_POR_DEFECTO = "#2563eb";

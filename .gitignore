@@ -1,5 +1,8 @@
 .DS_Store
 .vercel
+.env
+.env.local
+.env*.local
 
 # Fixtures locales con datos reales de Habi (nombres, direcciones,
 # correos) usadas para probar el formato de la API — no deben
