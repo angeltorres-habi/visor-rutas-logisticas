@@ -48,7 +48,7 @@ module.exports = async function handler(req, res) {
     }
 
     const data = await respuesta.json();
-    const geoJson = desescaparResultado(data.result, key);
+    const geoJson = extraerGeoJson(data.result, key);
 
     const sinRutas = !geoJson || (Array.isArray(geoJson.features) && geoJson.features.length === 0);
     if (sinRutas) {
@@ -64,26 +64,47 @@ module.exports = async function handler(req, res) {
 };
 
 /**
- * Upstash puede devolver el valor como objeto ya parseado, como JSON
- * en texto, o como JSON doblemente escapado (string dentro de string,
- * típico de cómo algunos clientes guardan el geojson). Se intenta
- * JSON.parse hasta dos veces para llegar al objeto real.
+ * Normaliza el valor crudo que devuelve Upstash a un GeoJSON limpio,
+ * sin importar la forma en que haya quedado guardado:
+ *  - FeatureCollection/Feature directo.
+ *  - Envuelto en map_geojson o data.map_geojson (forma de
+ *    /get_visit_routes).
+ *  - Cualquiera de los niveles anteriores como string (JSON en texto
+ *    o incluso doblemente escapado: string dentro de string).
  *
  * @param {unknown} resultado - data.result crudo devuelto por Upstash
  * @param {string} key - solo para logs de error
  * @returns {Object|null}
  */
-function desescaparResultado(resultado, key) {
-  let valor = resultado ?? null;
+function extraerGeoJson(resultado, key) {
+  const valor = parsearProfundo(resultado, key);
+  if (!valor || typeof valor !== "object") return null;
 
-  for (let intento = 0; intento < 2 && typeof valor === "string"; intento++) {
+  if (esGeoJson(valor)) return valor;
+
+  const candidato = parsearProfundo(valor.map_geojson ?? valor.data?.map_geojson, key);
+  return esGeoJson(candidato) ? candidato : null;
+}
+
+// Aplica JSON.parse hasta dos veces mientras el valor siga siendo un
+// string: cubre tanto "JSON en texto" como "JSON doblemente escapado"
+// (string dentro de string).
+function parsearProfundo(valor, key, intentosRestantes = 2) {
+  let actual = valor ?? null;
+
+  while (typeof actual === "string" && intentosRestantes > 0) {
     try {
-      valor = JSON.parse(valor);
+      actual = JSON.parse(actual);
     } catch (error) {
-      console.error(`No se pudo parsear (intento ${intento + 1}) el resultado de la llave "${key}":`, error);
+      console.error(`No se pudo parsear el valor de la llave "${key}":`, error);
       return null;
     }
+    intentosRestantes--;
   }
 
-  return typeof valor === "object" ? valor : null;
+  return actual;
+}
+
+function esGeoJson(obj) {
+  return Boolean(obj) && typeof obj === "object" && (obj.type === "FeatureCollection" || obj.type === "Feature");
 }
